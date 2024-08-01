@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y \
     gazebo11 \
     ros-noetic-gazebo-ros-pkgs \
     ros-noetic-gazebo-ros-control \
+    ros-noetic-joint-trajectory-controller \
     python3-pip \
     git
 

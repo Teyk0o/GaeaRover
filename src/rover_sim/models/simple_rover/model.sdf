@@ -19,8 +19,8 @@
         </geometry>
       </visual>
     </link>
-    
-    <link name="left_wheel">
+
+    <link name="left_front_wheel">
       <pose>0.1 0.13 0.1 0 1.5707 1.5707</pose>
       <collision name="collision">
         <geometry>
@@ -39,8 +39,8 @@
         </geometry>
       </visual>
     </link>
-    
-    <link name="right_wheel">
+
+    <link name="right_front_wheel">
       <pose>0.1 -0.13 0.1 0 1.5707 1.5707</pose>
       <collision name="collision">
         <geometry>
@@ -59,21 +59,139 @@
         </geometry>
       </visual>
     </link>
-    
-    <joint type="revolute" name="left_wheel_hinge">
-      <child>left_wheel</child>
+
+    <link name="left_rear_wheel">
+      <pose>-0.1 0.13 0.1 0 1.5707 1.5707</pose>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>0.1</radius>
+            <length>0.05</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+            <radius>0.1</radius>
+            <length>0.05</length>
+          </cylinder>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name="right_rear_wheel">
+      <pose>-0.1 -0.13 0.1 0 1.5707 1.5707</pose>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>0.1</radius>
+            <length>0.05</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+            <radius>0.1</radius>
+            <length>0.05</length>
+          </cylinder>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="left_front_wheel_hinge">
+      <child>left_front_wheel</child>
       <parent>chassis</parent>
       <axis>
         <xyz>0 1 0</xyz>
       </axis>
     </joint>
 
-    <joint type="revolute" name="right_wheel_hinge">
-      <child>right_wheel</child>
+    <joint type="revolute" name="right_front_wheel_hinge">
+      <child>right_front_wheel</child>
       <parent>chassis</parent>
       <axis>
         <xyz>0 1 0</xyz>
       </axis>
     </joint>
+
+    <joint type="revolute" name="left_rear_wheel_hinge">
+      <child>left_rear_wheel</child>
+      <parent>chassis</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+    <joint type="revolute" name="right_rear_wheel_hinge">
+      <child>right_rear_wheel</child>
+      <parent>chassis</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+    <link name="lidar_link">
+      <pose>0.2 0 0.2 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>0.05</radius>
+            <length>0.1</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+            <radius>0.05</radius>
+            <length>0.1</length>
+          </cylinder>
+        </geometry>
+      </visual>
+      <sensor name="lidar" type="ray">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>true</visualize>
+        <update_rate>100</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>1</samples>
+              <resolution>1</resolution>
+              <min_angle>0</min_angle>
+              <max_angle>0</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.1</min>
+            <max>12.0</max>
+            <resolution>0.005</resolution>
+          </range>
+        </ray>
+        <plugin name="laser" filename="libgazebo_ros_ray_sensor.so">
+          <topicName>/scan</topicName>
+          <frameName>lidar_link</frameName>
+          <output_type>sensor_msgs/LaserScan</output_type>
+        </plugin>
+      </sensor>
+    </link>
+
+    <joint name="lidar_joint" type="revolute">
+      <parent>chassis</parent>
+      <child>lidar_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-inf</lower>
+          <upper>inf</upper>
+        </limit>
+      </axis>
+    </joint>
   </model>
+  <plugin name="lidar_controller" filename="libgazebo_ros_joint_pose_trajectory.so">
+    <updateRate>100</updateRate>
+    <jointName>lidar_joint</jointName>
+    <topicName>/lidar_joint_trajectory</topicName>
+  </plugin>
 </sdf>

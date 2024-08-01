@@ -15,4 +15,12 @@
     <exec_depend>roscpp</exec_depend>
     <exec_depend>rospy</exec_depend>
     <exec_depend>std_msgs</exec_depend>
+    <build_depend>gazebo_ros</build_depend>
+    <exec_depend>gazebo_ros</exec_depend>
+    <build_depend>gazebo_plugins</build_depend>
+    <exec_depend>gazebo_plugins</exec_depend>
+    <build_depend>xacro</build_depend>
+    <exec_depend>xacro</exec_depend>
+    <build_depend>velocity_controllers</build_depend>
+    <exec_depend>velocity_controllers</exec_depend>
 </package>

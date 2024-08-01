@@ -1,0 +1,4 @@
+lidar_joint_velocity_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: lidar_joint
+  pid: {p: 1.0, i: 0.1, d: 0.01}
